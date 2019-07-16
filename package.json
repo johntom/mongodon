@@ -4,9 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "tap test/**/*.test.js",
+    "start": "node server.js",
+    "dev": "node_modules/.bin/nodemon server.js -l info -P"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mattduffield/mongodon.git"
