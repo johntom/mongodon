@@ -1,19 +1,32 @@
 
+//mrg=mongodb://johntom:nm5800@ds245927.mlab.com:45927/mrg
+// mongodb://admin:yHO6ACcBA6dyQkoD@SG-Brookbridge-22047.servers.mongodirector.com:48815,SG-Brookbridge-22048.servers.mongodirector.com:48815,SG-Brookbridge-22049.servers.mongodirector.com:48815/admin?ssl=true&replicaSet=RS-Brookbridge-0&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1
+
+
 // idiot's guide to mongodon
 // http://localhost:3000/documentation
 // http://localhost:3000/api/mrg/inventory?filter=Title=.*the.*&artist.lastName=seliger
-http://localhost:3000/api/mrg/artist?filter={%22FirstName%22:%22Paul%22}&fo=true
-http://localhost:3000/api/mrg/artist?filter={%22FirstName%22:%22Paul%22}
-http://localhost:3000/api/mrg/artist?filter={"FirstName":"/Pa/"}   NG
+http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}&fo=true
+http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}
+
 http://localhost:3000/api/mrg/artist?filter={"FirstName": new RegExp('.*Jo.*), 'i'}  
 http://localhost:3000/api/mrg/inventory?filter= {"createdAt":{"$gte":"7/1/2019","$lte":"8/1/2019"}}
-http://localhost:3000/api/mrg/inventory?filter=%20{%22createdAt%22:{%22$gte%22:%227/1/2019%22,%22$lte%22:%228/1/2019%22}}
-http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"sel","$options":"i"}}  // find anywhere case insensitive
-http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"^sel","$options":"i"}} // find starting with case insensitive
-http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"ger$","$options":"i"}} // find ending with case insensitive
-http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"^seliger$","$options":"i"}}  // find exact with case insensitive
+http://localhost:3000/api/mrg/inventory?filter={"createdAt":{"$gte":"7/1/2019","$lte":"8/1/2019"}}
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"sel","$options":"i"}}  // find anywhere case insensitive
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"sel","$options":"i"}}
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"^sel","$options":"i"}} // find starting with case insensitive
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"ger$","$options":"i"}} // find ending with case insensitive
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"^seliger$","$options":"i"}}  // find exact with case insensitive
+
+// orgs on contact
+http://localhost:3000/api/mrg/contacts?filter={"org.ID":3142}  // no quote ard int
+
+{} 
+
 http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"sel"}} // find anywhere
-http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"^sel%","$options":"i%"}
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":"Seliger"}
+
+http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"^sel%","$options":"i"}
 http://localhost:3000/api/mrg/inventory?filter={"keywords":["Painting","Collage"]}
 http://localhost:3000/api/mrg/inventory?filter={"createdAt":{"$gte":"7/1/2019","$lte":"8/1/2019"}} // find date rance
 http://localhost:3000/api/mrg/collections
@@ -26,7 +39,8 @@ http://localhost:3000/api/mrg/runCommand?command={"count":"artist","query":{"Las
 http://localhost:3000/api/mrg/runCommand?command={"count":"artist","query":{"createdAt":{"$lt":"7/11/2019"}}}
 http://localhost:3000/api/mrg/runCommand?command={"aggregate":"inventory","pipeline":[{"$match":{"InvYear" :"1970"}},{"$sort":{"Title":1}},{"$group":{"_id":{"ownername":"$ownername"},"count":{"$sum":1}}}],"cursor":{}}
 
-
+// bad
+http://localhost:3000/api/mrg/artist?filter={"FirstName":"/Pa/"}   NG
 
 //   var regexStr = '.*' + title + '.*';
 
