@@ -17,18 +17,39 @@ module.exports = async function (fastify, opts) {
   // Reference: https://gist.github.com/harish2704/d0ee530e6ee75bad6fd30c98e5ad9dab
   // Usage: "pipeline[0].$match.modified_date.$gt"
   //
-  function getProp( object, keys, defaultVal ){
+  function getProp(object, keys, defaultVal) {
     keys = Array.isArray(keys) ? keys : keys.replace(/(\[(\d)\])/g, '.$2').split('.');
     object = object[keys[0]];
-    if (object && keys.length> 1) {
+    if (object && keys.length > 1) {
       return getProp(object, keys.slice(1), defaultVal);
     }
     return object === undefined ? defaultVal : object;
   }
-  function dateParser(key, value) {
+  // function dateParser(key, value) {
+  //   if (typeof value === 'string') {
+  //     if (Date.parse(value)) {
+  //       return new Date(value);
+  //     }
+  //   }
+  //   return value;
+  // }
+  // function reviver(key, value) {
+  //   if (typeof value === 'string') {
+  //     if (Date.parse(value)) {
+  //       return new Date(value);
+  //     } else if (key === '_id') {
+  //       return require('mongodb').ObjectId(value);
+  //     }
+  //   }
+  //   return value;
+  // }
+  function reviver(key, value) {
     if (typeof value === 'string') {
-      if (Date.parse(value)) {
+      if (/\d{4}-\d{1,2}-\d{1,2}/.test(value) ||
+          /\d{4}\/\d{1,2}\/\d{1,2}/.test(value)) {
         return new Date(value);
+      } else if (key === '_id') {
+        return require('mongodb').ObjectId(value);
       }
     }
     return value;
@@ -36,12 +57,12 @@ module.exports = async function (fastify, opts) {
   //
   // List Databases
   //
-  fastify.get('/databases', 
+  fastify.get('/databases',
     {
       schema: {
         params: {}
       }
-    }, 
+    },
     async (req, reply) => {
       const databases = require('../../../databases.json');
       fastify.io.sockets.emit('lobby', databases);
@@ -51,7 +72,7 @@ module.exports = async function (fastify, opts) {
   //
   // List Collections
   //
-  fastify.get('/:database/collections', 
+  fastify.get('/:database/collections',
     {
       schema: {
         params: {
@@ -65,9 +86,9 @@ module.exports = async function (fastify, opts) {
           }
         }
       }
-    }, 
+    },
     async (req, reply) => {
-      const {database} = req.params;
+      const { database } = req.params;
       const result = await fastify.mongo[database].db.listCollections().toArray();
       fastify.io.sockets.emit('lobby', result);
       return result;
@@ -77,7 +98,7 @@ module.exports = async function (fastify, opts) {
   //
   // Run Command
   //
-  fastify.get('/:database/runCommand', 
+  fastify.get('/:database/runCommand',
     {
       schema: {
         params: {
@@ -104,13 +125,13 @@ module.exports = async function (fastify, opts) {
           ]
         }
       }
-    }, 
+    },
     async (req, reply) => {
-      const {database} = req.params;
-      const {command = null} = req.query;
+      const { database } = req.params;
+      const { command = null } = req.query;
       let query = {};
       if (command) {
-        query = JSON.parse(command, dateParser);
+        query = JSON.parse(command, reviver);
       }
       const result = await fastify.mongo[database].db.command(query);
       fastify.io.sockets.emit('lobby', result);
@@ -121,7 +142,7 @@ module.exports = async function (fastify, opts) {
   //
   // Delete (Delete)
   //
-  fastify.delete('/:database/:collection/:id', 
+  fastify.delete('/:database/:collection/:id',
     {
       schema: {
         params: {
@@ -147,13 +168,13 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection, id} = req.params;
+      const { database, collection, id } = req.params;
       const entity = getEntity(database, collection);
-      const _id = require('mongodb').ObjectId(id);
-      const result = await entity.deleteOne({_id});
+      const _id = require('mongodb').ObjectId(id);// cant use reviver here as param
+      const result = await entity.deleteOne({ _id });
       fastify.io.sockets.emit('lobby', result);
       if (!result.deletedCount) {
-        return reply.code(404).send({status: 'Not found!'});
+        return reply.code(404).send({ status: 'Not found!' });
       }
       return result.deletedCount;
       // return {database, collection, id, _id, result};
@@ -162,7 +183,7 @@ module.exports = async function (fastify, opts) {
   //
   // Delete (Delete Many)
   //
-  fastify.delete('/:database/:collection', 
+  fastify.delete('/:database/:collection',
     {
       schema: {
         params: {
@@ -194,11 +215,11 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection, id} = req.params;
-      const {filter} = req.query;
+      const { database, collection, id } = req.params;
+      const { filter } = req.query;
       let query = {};
       if (filter) {
-        query = JSON.parse(filter, dateParser);
+        query = JSON.parse(filter, reviver);
         if (query._id) {
           query._id = require('mongodb').ObjectId(query._id);
         }
@@ -207,7 +228,7 @@ module.exports = async function (fastify, opts) {
       const result = await entity.deleteMany(query);
       fastify.io.sockets.emit('lobby', result);
       if (!result.deletedCount) {
-        return reply.code(404).send({status: 'Not found!'});
+        return reply.code(404).send({ status: 'Not found!' });
       }
       return result.deletedCount;
       // return {database, collection};
@@ -278,14 +299,14 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection} = req.params;
-      const {filter, orderBy, limit = 0, skip = 0, fo = false, f = null, c = false} = req.query;
+      const { database, collection } = req.params;
+      const { filter, orderBy, limit = 0, skip = 0, fo = false, f = null, c = false } = req.query;
       let query = {};
       let sort = {};
       let project = {};
       let findOne = fo;
       if (filter) {
-        query = JSON.parse(filter, dateParser);
+        query = JSON.parse(filter, reviver);
         if (query._id) {
           query._id = require('mongodb').ObjectId(query._id);
           findOne = true;
@@ -302,7 +323,7 @@ module.exports = async function (fastify, opts) {
       let result;
       if (findOne) {
         if (f) {
-          result = await entity.findOne(query, {projection: project});
+          result = await entity.findOne(query, { projection: project });
         } else {
           result = await entity.findOne(query);
         }
@@ -325,7 +346,7 @@ module.exports = async function (fastify, opts) {
   //
   // Get By Id (Retreive one)
   //
-  fastify.get('/:database/:collection/:id', 
+  fastify.get('/:database/:collection/:id',
     {
       schema: {
         params: {
@@ -351,16 +372,18 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection, id} = req.params;
+      const { database, collection, id } = req.params;
       const entity = getEntity(database, collection);
       // const _id = new ObjectId(id);
       const _id = require('mongodb').ObjectId(id);
-      const result = await entity.findOne({_id});
+      const result = await entity.findOne({ _id });
       fastify.io.sockets.emit('lobby', result);
       // return {database, collection, id, _id, result};
       return result;
     }
   );
+  //
+  // Post (Create)
   //
   // Post (Create)
   //
@@ -388,9 +411,9 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection} = req.params;
+      const { database, collection } = req.params;
       const entity = getEntity(database, collection);
-      const obj = JSON.parse(req.body, dateParser);
+      const obj = JSON.parse(req.body, reviver);
       let result;
       if (Array.isArray(obj)) {
         result = await entity.insertMany(obj);
@@ -444,22 +467,37 @@ module.exports = async function (fastify, opts) {
       }
     },
     async (req, reply) => {
-      const {database, collection} = req.params;
-      const {filter} = req.query;
-      let query = {};
-      if (filter) {
-        query = JSON.parse(filter, dateParser);
-      }
+      const { database, collection } = req.params;
+      const { filter } = req.query;
+      console.log('database', database)
+      console.log('filter', filter)
+      // 
+      console.log('\n\n\n')
+      // let result = 'test'
+         let query = {};
+         if (filter) {
+           query = JSON.parse(filter, reviver);
+         }
+      console.log('query', query)
+      
       const entity = getEntity(database, collection);
-      const obj = JSON.parse(req.body, dateParser);
-      let result;
-      if (Array.isArray(obj)) {
-        result = await entity.updateMany(query, {$set: obj});
-        fastify.io.sockets.emit('lobby', result);
-      } else {
-        result = await entity.updateOne(query, {$set: obj});
-        fastify.io.sockets.emit('lobby', result);
-      }
+      console.log('req.body', req.body)
+        
+      const obj = req.body//JSON.parse(req.body, reviver);
+
+      //  const obj = req.body;
+       console.log('obj',obj);
+        let result;
+        if (Array.isArray(obj)) {
+          //delete obj._id in many 
+          result = await entity.updateMany(query, {$set: obj});
+          fastify.io.sockets.emit('lobby', result);
+        } else {
+           delete obj._id;
+          result = await entity.updateOne(query, {$set: obj});
+        
+          fastify.io.sockets.emit('lobby', result);
+        }
       return result;
       // return {database, collection};
     }
