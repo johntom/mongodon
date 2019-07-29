@@ -21,7 +21,64 @@ http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":{"$regex":"^se
 // orgs on contact
 http://localhost:3000/api/mrg/contacts?filter={"org.ID":3142}  // no quote ard int
 
-{} 
+
+//artbased 'https://artbased.com/api/mrg'
+https://artbased.com/api/mrg/inventory?filter={"artist.lastName":{"$regex":"sel","$options":"i"}} 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//MONGODB_URLgallerynm=mongodb://johntom:nm5800@ds153380.mlab.com:53380/?connectTimeoutMS=10000&authSource=gallerynm&authMechanism=SCRAM-SHA-1                            
+// gallerynm
+//9020', '74.114.164.20 or gallery.meledandri.com
+http://74.114.164.20:9020/api/gallerynm/collections
+http://74.114.164.20:9020/api/gallerynm/posts
+http://74.114.164.20:9020/api/gallerynm/posts/570af6b633d1f26013b37c7d
+http://74.114.164.20:9020/api/gallerynm/posts?filter={"author":"nm"}
+http://74.114.164.20:9020/api/gallerynm/posts?filter={"author":"nm","tags": ["vitae"]}
+http://74.114.164.20:9020/api/gallerynm/posts?filter={"author":"nm","tags": ["vitae","private1"]}
+http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":{"$regex":"pri"}}
+http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":"home"}
+
+
+
+
+
+// private insurance etc
+http://gallery.meledandri.com:9020/api/gallerynm/posts?filter={"postTitle":"private"}
+http://127.0.0.1:3000/api/gallerynm/posts?filter={%22postTitle%22:%22private%22}
+http://127.0.0.1:3000/gallery/getonepdf/noteworthy/DELANE0042.jpg
+http://gallery.meledandri.com:9020/gallery/getonepdf/noteworthy/DELANE0042.jpg
+
+
+http://127.0.0.1:3000/api/gallerynm/gallery/getonepdf/noteworthy/DELANE0042.jpg
+
+// { method: ['get'], path: '/api/v1/onepdf/:template/:filename', handler: 'PdfController.getonePdf' },
+// C:\Frameworks\Fastify\mongodon\uploads\noteworthy  DELANE0042.jpg DELANE0059.jpg
+http://gallery.meledandri.com:9020/gallery/getonepdf/noteworthy/DELANE0042.jpg
+
+gallery.meledandri.com:9020/api/gallerynm/posts?filter={"_id":"5cc5db6b4b56ad12ac88c4bc"}
+
+async getpost(posttitle) {
+  // var url = `${this.baseweb}posts/${posttitle}`;
+  // var url = `${this.baseweb}posts?filter={"postTitle":{"$regex":"${posttitle}"`;
+  var url = `${this.baseweb}posts?filter={"postTitle":"${posttitle}"}`;
+  // http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":"home"}
+  return await fetch(url).then((res) => res.json())
+}
+
+// for upload
+http://gallery.meledandri.com:9020/upload
+// needleman
+
+// needleman end
+//gallerynm end//////////////////////////////////////////////
+
+
+http://74.114.164.20:9020/api/gallerynm/categories
+https://74.114.164.21api/gallerynm/posts?filter={"artist.lastName":{"$regex":"sel","$options":"i"}} 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 http://localhost:3000/api/mrg/inventory?filter={"LastName":{"$regex":"sel"}} // find anywhere
 http://localhost:3000/api/mrg/inventory?filter={"artist.lastName":"Seliger"}
