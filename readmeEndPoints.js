@@ -5,6 +5,9 @@
 
 // idiot's guide to mongodon
 // http://localhost:3000/documentation
+
+
+/// for each database
 // http://localhost:3000/api/mrg/inventory?filter=Title=.*the.*&artist.lastName=seliger
 http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}&fo=true
 http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}
@@ -39,6 +42,20 @@ http://74.114.164.20:9020/api/gallerynm/posts?filter={"author":"nm","tags": ["vi
 http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":{"$regex":"pri"}}
 http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":"home"}
 
+
+// mas
+http://74.114.164.20:9020/api/mas/collections
+http://127.0.0.1:9020/api/mas/claim
+http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"03-00713",}
+
+convert ?STATUS=2&claimno=D01-03188
+http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"01-03188","STATUS":2}
+
+
+
+
+
+http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"01-03188","STATUS":2}
 
 
 
