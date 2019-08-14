@@ -25,4 +25,7 @@ fastify
   
 
   console.log('/pi 002===plugin================fastify mongodb======');
+
+
+
 });

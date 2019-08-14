@@ -28,6 +28,7 @@
     "fastify-cors": "^2.1.3",
     "fastify-mongodb": "^1.0.1",
     "fastify-multipart": "^1.0.1",
+    "fastify-mysql": "^0.3.0",
     "fastify-plugin": "^1.6.0",
     "fastify-swagger": "^2.4.0",
     "fs-extra": "^8.1.0",

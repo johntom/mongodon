@@ -44,20 +44,52 @@ http://74.114.164.20:9020/api/gallerynm/posts?filter={"postTitle":"home"}
 
 
 // mas
+// test with fecBRM3
+//https://docs.mlab.com/data-api/#list-documents
 http://74.114.164.20:9020/api/mas/collections
 http://127.0.0.1:9020/api/mas/claim
 http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"03-00713",}
 
 convert ?STATUS=2&claimno=D01-03188
 http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"01-03188","STATUS":2}
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":0},{"DESCRIPTION":1}
+http://127.0.0.1:9020/api/mas/claim?f={%22CLAIM_NO%22:1}&orderBy={%22CLAIM_NO%22:1}
+
+projection
+project db.getCollection("code").find({},{"DESCRIPTION":1})
 
 
+
+https://mrg-server-staging.appspot.com/api/mas/claim?f={"CLAIM_NO":1}
+
+https://mrg-server-staging.appspot.com/api/mas?filter={"adjusters.ADJUSTER_NAME" : "Louis Phillips"} 
 
 
 
 http://127.0.0.1:9020/api/mas/claim?filter={"CLAIM_NO":"01-03188","STATUS":2}
 
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS"=2,dol1="2019-02-06","dol2"="2019-08-06"}
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":2",DATE_OF_LOSS:{$gte:ISODate("2019-03-13)"}
+// {DATE_OF_LOSS:{$gte: ISODate('2019-01-01')}}
 
+
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":2,"DATE_OF_LOSS":{"$gte":ISODate("2019-06-21")} }
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":2,"DATE_OF_LOSS":{"$gte":"2019-06-21"}}
+
+
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":2,"DATE_OF_LOSS":{"$gte":ISODate("2019-06-13")},f={"CLAIM_NO":1,"DATE_OF_LOSS":1}}
+http://127.0.0.1:9020/api/mas/claim?filter={"ADJUSTER_ID":4},f={"CLAIM_NO":1,"DATE_OF_LOSS":1}}
+
+http://127.0.0.1:9020/api/mas/claim?f={"CLAIM_NO":1,"DATE_OF_LOSS":1}&filter={"ADJUSTER_ID":4}
+http://127.0.0.1:9020/api/mas/claim?f={"CLAIM_NO":1,"DATE_OF_LOSS":1}&filter={"ADJUSTER_ID":4,"DATE_OF_LOSS":{"$gte":"2019-06-21"}}
+http://127.0.0.1:9020/api/mas/claim?filter={"STATUS":0,"Adjuster":2,"DATE_OF_LOSS":{"$gte":"2019-02-06"}}"
+?filter={"STATUS":2,"ADJUSTER_ID":2,"DATE_OF_LOSS":{"$gte":"2019-01-01"}}
+?filter={"STATUS":2,"ADJUSTER_ID":2,"DATE_OF_LOSS":{"$gte":"2019-01-02"}}
+?filter={"STATUS":2,"ADJUSTER_ID":2,"DATE_OF_LOSS":{"$gte":"2019-03-01"}}
+&f={"CLAIM_NO":1,"DATE_OF_LOSS":1,"STATUS":1}
+&orderBy={"CLAIM_NO":1}
+
+///////mas
 
 
 // private insurance etc
@@ -155,3 +187,16 @@ new RegExp(regexStr, 'i')
    //  http://localhost:3000/api/gofer/mrg/inventory/title/content?Title=.*the.*&artist.lastName=sel.*&ModifiedDate={ $gte: new Date('1/1/2017'), $lte: new Date('1/1/2018') }
 
   // http://localhost:3000/api/gofer/mrg/inventory/title/content?Title=.*the.*&artist.lastName=sel.*&keywords={ $in: ['Painting','Ceramic'] }
+
+
+
+// bb
+http://localhost:9020/meta
+  https://mrg-server-staging.appspot.com/api/pod/contract?filter={%22BCSNumber%22%20:%20%22151675%22}
+
+  //https://docs.mlab.com/data-api/#list-documents
+  https://mrg-server-staging.appspot.com/api/pod/collections
+  https://mrg-server-staging.appspot.com/api/pod/documentation
+
+  https://mrg-server-staging.appspot.com/api/pod/meta
+  documentation
