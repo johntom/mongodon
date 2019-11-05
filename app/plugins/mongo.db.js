@@ -16,9 +16,12 @@ fastify
   // .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLGallery, name: 'gallerynm' })
   // .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLpod, name: 'pod' })
  
-  .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLmas, name: 'mas' })
-  .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLpod, name: 'pod' })
+  // .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLmas, name: 'mas' })
+  // .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLpod, name: 'pod' })
 
+
+// MRG
+  .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLmrg, name: 'mrg' })
  
   console.log('mas  ', process.env.MONGODB_URLmas, 'registered...');
   console.log('pod  ', process.env.MONGODB_URLpod, 'registered...');

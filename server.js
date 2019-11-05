@@ -51,6 +51,8 @@ function start (args, cb) {
 function run (args, cb) {
   require('dotenv').config();
   let opts = parseArgs(args);
+  // console.log('================opts',opts.port, process.env.PORT, opts)
+
   opts.port = opts.port || process.env.PORT || 3000;
   //  opts.address = opts.address || process.env.ADDRESS || 'localhost';
   cb = cb || assert.ifError;

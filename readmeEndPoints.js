@@ -6,6 +6,13 @@
 // idiot's guide to mongodon
 // http://localhost:3000/documentation
 
+// nov 2019 replace 3000 with 1920 http://localhost:9020/api/mrg/inventory?filter={%22artist.lastName%22:{%22$regex%22:%22sel%22,%22$options%22:%22i%22}}
+// see PORT=9020
+// .env holds ip and port
+ADDRESS='74.114.164.20'
+VERSION=1.0.4
+PORT=9020
+
 
 /// for each database
 // http://localhost:3000/api/mrg/inventory?filter=Title=.*the.*&artist.lastName=seliger
@@ -200,3 +207,7 @@ http://localhost:9020/meta
 
   https://mrg-server-staging.appspot.com/api/pod/meta
   documentation
+
+  // mysql
+  https://mrg-server-staging.appspot.com/mysql/projects
+  http://localhost:9020/mysql/projects
