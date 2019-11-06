@@ -49,12 +49,12 @@ module.exports = async function (fastify, opts) {
         companyexact = false
     } else companyexact = true
 
-    console.log('in find companyexact', companyexact,companyname)
+    console.log('in find companyexact', detailLast,companyexact,companyname)
     // http://localhost:8080/api/v1/inventory/findcontent?title=the%20d&artist=andrews        
     var pagesize = 30;
-    var searchObj = {};
-    if ((companyname !== '0') && (companyname !== undefined)) {
+     if ((companyname !== '0') && (companyname !== undefined)) {
         //    _.extend(searchObj, { DATE_OF_LOSS: dol });
+        validsearch=true
         if (companyexact) {
             _.extend(searchObj, { CompanyName: companyname });
         } else {
@@ -63,40 +63,49 @@ module.exports = async function (fastify, opts) {
         }
     }
     if ((detailLast !== '0') && (detailLast !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + detailLast + '.*';
         _.extend(searchObj, { "LastName": new RegExp(regexStr1, 'i') });
     }
     if ((detailFirst !== '0') && (detailFirst !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + detailFirst + '.*';
         _.extend(searchObj, { "FirstName": new RegExp(regexStr1, 'i') });
     }
 
     if ((notes !== '0') && (notes !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + notes + '.*';
         _.extend(searchObj, { "Notes": new RegExp(regexStr1, 'i') });
     }
 
     if ((address !== '0') && (address !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + address + '.*';
         _.extend(searchObj, { "Address": new RegExp(regexStr1, 'i') });
     }
     if ((city !== '0') && (city !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + city + '.*';
         _.extend(searchObj, { "City": new RegExp(regexStr1, 'i') });
     }
     if ((state !== '0') && (state !== undefined)) {
+        validsearch=true
         var regexStr1 = '*.' + state + '.*';
         _.extend(searchObj, { "State": new RegExp(regexStr1, 'i') });
      }
     if ((zip !== '0') && (zip !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + zip + '.*';
         _.extend(searchObj, { "Zip": new RegExp(regexStr1, 'i') });
     }
     if ((phone !== '0') && (phone !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + phone + '.*';
         _.extend(searchObj, { "Phone": new RegExp(regexStr1, 'i') });
     }
     if ((email !== '0') && (email !== undefined)) {
+        validsearch=true
         var regexStr1 = '.*' + email + '.*';
         _.extend(searchObj, { "email": new RegExp(regexStr1, 'i') });
     }
@@ -209,7 +218,7 @@ module.exports.autoPrefix = '/api/v1/client'
 // http://localhost:9020/api/v1/client/clientsall
 // http://localhost:9020/api/v1/client/5a4fb66a5edd4dbecb1e2f7e
 // http://localhost:9020/api/v1/client/
-
+// http://localhost:9020/api/v1/client/findcontent?detailLast=tomaselli
 
 //   { method: ['get'], path: '/api/v1/clientsall', handler: 'ClientsController.findclients' },
 //   { method: ['put'], path: '/api/v1/client/update', handler: 'ClientsController.update' },

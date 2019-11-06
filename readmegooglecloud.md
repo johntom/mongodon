@@ -23,3 +23,9 @@ https://mrg-server-staging.appspot.com/api/v1/contact/findcontent?keywords=&genr
 
 
 https://mrg-server-staging.appspot.com/api/v1/contact/findcontent?keywords=Collector&genres=Abstraction&contactl=s&contactf=a&deceased=0&tabname=Contactsearch
+
+
+https://mrg-server-staging.appspot.com/api/v1/client/clientsall
+https://mrg-server-staging.appspot.com/api/v1/client/findcontent?detailLast=tomaselli
+
+
