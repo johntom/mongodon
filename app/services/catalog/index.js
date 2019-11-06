@@ -74,7 +74,6 @@ module.exports = async function (fastify, opts) {
         } else {
             // result = await catalog.find(searchObj).project(project).sort({
             let result = await catalog.find(searchObj).sort({
-
                 CatalogTitle: 1
             }).toArray()
             console.log('contacts====length=== ', result.length)
