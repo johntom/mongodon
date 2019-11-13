@@ -2,9 +2,9 @@ nvm use 10.15.3
 timeout 1
 cls
 timeout 1
-npm run dev
+rem npm run dev
 
-
+nodemon server.js
 
 rem nvm use 10.15.0
 rem localhost:3000

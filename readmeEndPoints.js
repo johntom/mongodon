@@ -15,6 +15,12 @@ PORT=9020
 
 
 /// for each database
+// MRG 
+// https://mrg-server-staging.appspot.com/api/mrg/orgs
+// https://mrg-server-staging.appspot.com/api/mrg/orgs?filter=
+// https://mrg-server-staging.appspot.com/api/mrg/orgs?filter={"OrgName":{"$regex":"gr","$options":"i"}}  
+
+
 // http://localhost:3000/api/mrg/inventory?filter=Title=.*the.*&artist.lastName=seliger
 http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}&fo=true
 http://localhost:3000/api/mrg/artist?filter={"FirstName":"Paul"}

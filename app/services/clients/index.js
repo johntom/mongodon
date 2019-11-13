@@ -182,7 +182,7 @@ module.exports = async function (fastify, opts) {
             // var isodate = new Date(Date.now()).toISOString() //this inserts as string
             let model = req.body
             let result = await clients.insertOne(model);
-            return result.insertedId; //.createdAt//
+            return {data:[{'model':model,'res':result}]} //result.insertedId; //.createdAt//
         }
     );
 
@@ -192,16 +192,23 @@ module.exports = async function (fastify, opts) {
 
     },
     async (req, reply) => {
-        fastify.log.info(`=======emulate==create============================ `)
+        fastify.log.info(`=======emulate==update============================ `)
 
         // var isodate = new Date(Date.now()).toISOString() //this inserts as string
         let obj = req.body
-        let query = {_id:obj._id};
+        const _id = require('mongodb').ObjectId(obj._id);// cant use reviver here as param
+  
+        // let query = {_id:_id} //obj._id};
+        let query = {_id: require('mongodb').ObjectId(obj._id)} //obj._id};
+
         delete obj._id;
         // query = JSON.parse(filter
         // let result = await codes.insertOne(model);
-        let result = await clients.updateOne(query, {$set: model});
-        return result;
+        let result = await clients.updateOne(query, {$set: obj});
+      
+        // return result;
+
+        return {data:[{id:_id},query,obj,result]};
 
     }
 );

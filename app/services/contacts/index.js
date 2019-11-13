@@ -311,80 +311,94 @@ module.exports = async function (fastify, opts) {
     const result = await clients.deleteOne({
       _id: new ObjectId(id)
     })
-
     if (!result.deletedCount) {
       return reply
         .code(404)
         .send({ status: 'contacts not found' })
     }
-
     return { status: 'ok' }
-
   })
 
-  fastify.get('/LastName/:clientsId', {
-    schema: {
-      params: {
-        type: 'object',
-        properties: {
-          ticketId: {
-            description: 'The id to get',
-            summary: 'The id to get',
-            type: 'string'
-          }
-        }
-      },
-      response: {
-        '200': {
-          description: 'contacts deleted',
-          summary: 'clients deleted',
-          type: 'object',
-          properties: {
-            _id: {
-              description: 'The clients Id',
-              summary: 'The clients Id',
-              type: 'string'
-            },
-            LastName: {
-              description: 'The clients LastName',
-              summary: 'The clients LastName',
-              type: 'string'
-            },
-            FirstName: {
-              description: 'The clients FirstName',
-              summary: 'The clients FirstName',
-              type: 'string'
-            }
-          }
-        },
-        '404': {
-          description: 'clients not found',
-          summary: 'Ticket not Found',
-          type: 'object',
-          properties: {
-            status: {
-              description: 'Status message',
-              summary: 'Status message',
-              type: 'string'
-            }
-          }
-        }
-      }
-    }
-  }, async function (request, reply) {
-    const id = request.params.ticketId
-    const result = await clients.findOne({
-      _id: new ObjectId(id)
-    })
-
-    if (!result) {
-      return reply
-        .code(404)
-        .send({ status: 'ticket not found' })
-    }
-    fastify.log.info(`result title ${result._id}  ${result.LastName}`)
-    return result
+  fastify.get('/:id', {
+  }, async function (req, reply) {
+      // let project = { "FirstName": 1, "LastName": 1, "Salutation": 1 } project(project)
+      //let project = { "CodeType": 1, "Description": 1 }
+      // let id =req.query.id;
+      let id =req.params.id;
+      
+      const _id = require('mongodb').ObjectId(id);
+      fastify.log.info(`\n\r======client findone=========id====================== `,_id)
+   
+      fastify.log.info(`\n\r======client findone=========result====================== `)
+      const result = await contacts.find({ _id: _id}).toArray()
+      fastify.log.info(`\n\r======client findone=========result====================== `)
+      return result
   })
+
+
+  // fastify.get('/LastName/:clientsId', {
+  //   schema: {
+  //     params: {
+  //       type: 'object',
+  //       properties: {
+  //         ticketId: {
+  //           description: 'The id to get',
+  //           summary: 'The id to get',
+  //           type: 'string'
+  //         }
+  //       }
+  //     },
+  //     response: {
+  //       '200': {
+  //         description: 'contacts deleted',
+  //         summary: 'clients deleted',
+  //         type: 'object',
+  //         properties: {
+  //           _id: {
+  //             description: 'The clients Id',
+  //             summary: 'The clients Id',
+  //             type: 'string'
+  //           },
+  //           LastName: {
+  //             description: 'The clients LastName',
+  //             summary: 'The clients LastName',
+  //             type: 'string'
+  //           },
+  //           FirstName: {
+  //             description: 'The clients FirstName',
+  //             summary: 'The clients FirstName',
+  //             type: 'string'
+  //           }
+  //         }
+  //       },
+  //       '404': {
+  //         description: 'clients not found',
+  //         summary: 'Ticket not Found',
+  //         type: 'object',
+  //         properties: {
+  //           status: {
+  //             description: 'Status message',
+  //             summary: 'Status message',
+  //             type: 'string'
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, async function (request, reply) {
+  //   const id = request.params.ticketId
+  //   const result = await clients.findOne({
+  //     _id: new ObjectId(id)
+  //   })
+
+  //   if (!result) {
+  //     return reply
+  //       .code(404)
+  //       .send({ status: 'ticket not found' })
+  //   }
+  //   fastify.log.info(`result title ${result._id}  ${result.LastName}`)
+  //   return result
+  // })
   //_hc= hardcoded 
   fastify.get('/contacts', {
 
