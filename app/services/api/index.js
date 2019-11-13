@@ -46,7 +46,7 @@ module.exports = async function (fastify, opts) {
   function reviver(key, value) {
     if (typeof value === 'string') {
       if (/\d{4}-\d{1,2}-\d{1,2}/.test(value) ||
-          /\d{4}\/\d{1,2}\/\d{1,2}/.test(value)) {
+        /\d{4}\/\d{1,2}\/\d{1,2}/.test(value)) {
         return new Date(value);
       } else if (key === '_id') {
         return require('mongodb').ObjectId(value);
@@ -469,39 +469,150 @@ module.exports = async function (fastify, opts) {
     async (req, reply) => {
       const { database, collection } = req.params;
       const { filter } = req.query;
+      console.log(" fastify.put('/:database/:collection'")
       console.log('database', database)
       console.log('filter', filter)
       // 
       console.log('\n\n\n')
       // let result = 'test'
-         let query = {};
-         if (filter) {
-           query = JSON.parse(filter, reviver);
-         }
+      let query = {};
+      if (filter) {
+        query = JSON.parse(filter, reviver);
+      }
       console.log('query', query)
-      
+
       const entity = getEntity(database, collection);
       console.log('req.body', req.body)
-        
+
       const obj = req.body//JSON.parse(req.body, reviver);
 
       //  const obj = req.body;
-       console.log('obj',obj);
-        let result;
-        if (Array.isArray(obj)) {
-          //delete obj._id in many 
-          result = await entity.updateMany(query, {$set: obj});
-          fastify.io.sockets.emit('lobby', result);
-        } else {
-           delete obj._id;
-          result = await entity.updateOne(query, {$set: obj});
-        
-          fastify.io.sockets.emit('lobby', result);
-        }
+      console.log('obj', obj);
+      let result;
+      if (Array.isArray(obj)) {
+        //delete obj._id in many 
+        result = await entity.updateMany(query, { $set: obj });
+        fastify.io.sockets.emit('lobby', result);
+      } else {
+        delete obj._id;
+        result = await entity.updateOne(query, { $set: obj });
+
+        fastify.io.sockets.emit('lobby', result);
+      }
       return result;
       // return {database, collection};
     }
   );
+
+
+  // Put (Update an array of docs)
+  //
+  fastify.put('/:database/:collection/:array',
+    {
+      schema: {
+        params: {
+          type: 'object',
+          properties: {
+            database: {
+              description: 'The database name',
+              summary: 'The database name',
+              type: 'string'
+            },
+            collection: {
+              description: 'The collection name',
+              summary: 'The collection name',
+              type: 'string'
+            }
+          }
+        },
+        querystring: {
+          type: 'object',
+          properties: {
+            filter: {
+              description: 'The filter criteria as a JSON string',
+              summary: 'The filter criteria',
+              type: 'string'
+            }
+          },
+          // required: [
+          //   'filter'
+          // ]
+        },
+        body: {
+          type: 'object'
+        }
+      }
+    },
+    async (req, reply) => {
+      const { database, collection, array } = req.params;
+      const { filter } = req.query;
+      console.log('batch put array database', database)
+      //   console.log('filter', filter)
+      // 
+      console.log('\n\n\n')
+      //// let result = 'test'
+      let query = {};
+      //  if (filter) {
+      //    query = JSON.parse(filter, reviver);
+      //  }
+      // console.log('query', query)
+      console.log('array', array)
+
+      const entity = getEntity(database, collection);
+      console.log('entity', entity)
+
+      const obj = req.body//JSON.parse(req.body, reviver);
+
+      //  const obj = req.body;
+      //  console.log('obj',obj);
+      let result = true;
+      // if (Array.isArray(obj)) {
+      //   //delete obj._id in many 
+      //   result = await entity.updateMany(query, {$set: obj});
+      //   fastify.io.sockets.emit('lobby', result);
+      // } else {
+      //    delete obj._id;
+      //   result = await entity.updateOne(query, {$set: obj});
+
+      //   fastify.io.sockets.emit('lobby', result);
+      // }
+      let ct = 0
+      let dataarray = obj.data
+    
+      for (const rec of dataarray) {
+        ct++
+        //   console.log(ct, rec.SupportingDocFilename)
+     
+        // result = await entity.updateOne(query, { $set: rec });
+        // ////////////////
+        // // const _id = require('mongodb').ObjectId(rec._id);// cant use reviver here as param
+        query = { _id: require('mongodb').ObjectId(rec._id) } //obj._id};
+        // console.log(ct, rec.SupportingDocFilename,rec.response,rec.reason,rec.account,query)
+     
+        
+        // // delete rec._id;
+        // let newobj = {}
+        let newobj = {}
+         newobj.response = rec.response||""
+         console.log(ct, rec.SupportingDocFilename,newobj.response,query)
+     
+        newobj.reason = rec.reason||""
+        newobj.account = rec.account||""
+        // console.log(ct,  query, newobj)
+       // console.log(ct,  rec.SupportingDocFilename,entity, query, newobj)
+
+
+        let result = await entity.updateOne(query, { $set: newobj });
+        // return result;
+        //[{id:_id},query,obj,result]};
+        /////////////////
+      }
+      return { 'data': 'updated' }
+      // return {database, collection};
+    }
+  );
+
+
 };
 
 module.exports.autoPrefix = '/api';

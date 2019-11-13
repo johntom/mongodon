@@ -217,3 +217,10 @@ http://localhost:9020/meta
   // mysql
   https://mrg-server-staging.appspot.com/mysql/projects
   http://localhost:9020/mysql/projects
+
+
+  // carisk
+  http://localhost:9020/api/carisk/hcfa
+  http://localhost:9020/api/carisk/hcfa?filter={"ClaimID":5115384}
+
+  

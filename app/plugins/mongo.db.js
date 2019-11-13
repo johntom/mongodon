@@ -23,7 +23,11 @@ fastify
 // MRG
   .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLmrg, name: 'mrg' })
   .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLclientbase, name: 'clientbase' })
+  .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.MONGODB_URLcarisk, name: 'carisk' })
  
+  
+  
+  
   // console.log('mas  ', process.env.MONGODB_URLmas, 'registered...');
   // console.log('pod  ', process.env.MONGODB_URLpod, 'registered...');
   

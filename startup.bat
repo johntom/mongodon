@@ -1,4 +1,5 @@
-nvm use 10.15.3
+REM nvm use 10.15.3
+nvm use 10.16.0
 timeout 1
 cls
 timeout 1
