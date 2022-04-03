@@ -4,7 +4,7 @@ const fp = require('fastify-plugin');
 
 module.exports = fp(async (fastify, opts) => {
   console.log('Registering databases...');
-  // fastify.register(require('fastify-mongodb'), {useNewUrlParser: true, url: process.env.MONGODB_URL, name: process.env.MONGODB_NAME });
+  // fastify.register(require('fastify-mongodb'), {useNewUrlParser: true, url: process.env.MONGODB_URLclientbase, name: 'clientbase' });
 fastify  
   // .register(require('fastify-mongodb'), {  useNewUrlParser: true,url: process.env.mrg, name: 'mrg' })
 
