@@ -32,7 +32,7 @@ In order to run your sever locally, you can execute the following command:
 
 `node server.js`
 
-or 
+or  
 
 `npm run start`
 
@@ -43,8 +43,10 @@ You can also use a tool like Postman to test as well.
 http://localhost:3000/meta/   
 this will display info for .env
 a simple test to load nunjucks
-http://localhost:3000/apinj/nunjucks/test
+http://localhost:3000/apinj/nunjucks/test 
+
 error
+
 D:\fastify-gp\mongodon\node_modules\point-of-view\index.js:170
     return (fastify && fastify.request) ? fastify.request.context.config.url : null
                                                                   ^
