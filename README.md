@@ -40,3 +40,21 @@ This will start a server on localhost PORT 3000. If you want to use the browser 
 `http://localhost:3000/documentation/`
 
 You can also use a tool like Postman to test as well.
+http://localhost:3000/meta/   
+this will display info for .env
+a simple test to load nunjucks
+http://localhost:3000/apinj/nunjucks/test
+error
+D:\fastify-gp\mongodon\node_modules\point-of-view\index.js:170
+    return (fastify && fastify.request) ? fastify.request.context.config.url : null
+                                                                  ^
+TypeError: Cannot read property 'config' of undefined
+    at getRequestedPath (D:\fastify-gp\mongodon\node_modules\point-of-view\index.js:170:67)
+    at D:\fastify-gp\mongodon\node_modules\point-of-view\index.js:418:29
+    at D:\fastify-gp\mongodon\node_modules\nunjucks\src\environment.js:41:5
+    at RawTask.call (D:\fastify-gp\mongodon\node_modules\asap\asap.js:40:19)
+    at flush (D:\fastify-gp\mongodon\node_modules\asap\raw.js:50:29)
+    at processTicksAndRejections (internal/process/task_queues.js:77:11)
+[nodemon] app crashed - waiting for file changes before starting...
+
+

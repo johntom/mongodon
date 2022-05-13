@@ -6,8 +6,9 @@ module.exports = async function (fastify, opts) {
   fastify.get('/', 
     async (req, reply) => {
       const version = process.env.VERSION;
+      const versionDate = process.env.VERSION_DATE;
       fastify.io.sockets.emit('lobby', {version});
-      return {version};
+      return {'version':version,'versionDate':versionDate };
     }
   );
 };
